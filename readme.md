@@ -69,13 +69,6 @@ npm start
 
 ---
 
-## 🧪 Usage
-
-- Visit the frontend at `http://localhost:5173` (or whatever Vite shows)
-- Register or login
-- Add or send money to other users
-
----
 
 ## 🤝 Contributing
 
