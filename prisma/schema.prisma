@@ -26,6 +26,7 @@ model User {
   quests           Quest[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+  Otp              Otp[]
 }
 
 model Quest {
@@ -34,10 +35,17 @@ model Quest {
   text        String
   xpValue     Int
   isCompleted Boolean           @default(false)
-  date        DateTime 
+  date        DateTime
   createdAt   DateTime          @default(now())
   user        User              @relation(fields: [userId], references: [id])
-  completions CompletionQuest[] 
+  completions CompletionQuest[]
+}
+
+model Otp {
+  id       Int    @id @default(autoincrement())
+  otp_code String
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
 }
 
 model CompletionQuest {
@@ -49,5 +57,3 @@ model CompletionQuest {
   user  User  @relation(fields: [userId], references: [id])
   quest Quest @relation(fields: [questId], references: [id])
 }
-
-
