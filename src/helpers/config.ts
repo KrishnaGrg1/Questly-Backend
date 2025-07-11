@@ -1,10 +1,10 @@
-import { config } from "dotenv";
+import { config } from 'dotenv';
 
-config()
+config();
 
-interface iEnv{
-    [ke:string]:String
+interface iEnv {
+  [ke: string]: String;
 }
 
-const env=process.env as iEnv
-export default env
+const env = process.env as iEnv;
+export default env;

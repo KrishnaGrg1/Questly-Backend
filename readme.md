@@ -1,6 +1,4 @@
-
 # Questly Backend
-
 
 Welcome to the **Questly Backend** repository! This project powers the backend of **Questly**, a gamified educational platform designed to motivate and track learners' progress through quests, streaks, and experience points.
 
@@ -21,12 +19,12 @@ Welcome to the **Questly Backend** repository! This project powers the backend o
 
 ## 🛠️ Tech Stack
 
-| Layer        | Technology     |
-|--------------|----------------|
-| Backend      | Node.js, Express.js |
-| Database     | PostgreSQL + Prisma ORM |
-| Auth         | JWT (JSON Web Tokens) |
-| Deployment   | Railway / Render / Vercel (suggested) |
+| Layer      | Technology                            |
+| ---------- | ------------------------------------- |
+| Backend    | Node.js, Express.js                   |
+| Database   | PostgreSQL + Prisma ORM               |
+| Auth       | JWT (JSON Web Tokens)                 |
+| Deployment | Railway / Render / Vercel (suggested) |
 
 ---
 
@@ -54,13 +52,13 @@ JWT_SECRET=your_secret_key
 PORT=port_number
 ```
 
-
 4. **Initialize Prisma and migrate DB**
 
 ```bash
-npx prisma migrate dev 
+npx prisma migrate dev
 npx prisma generate
 ```
+
 5. **Run Backend:**
 
 ```bash
@@ -68,7 +66,6 @@ npm start
 ```
 
 ---
-
 
 ## 🤝 Contributing
 

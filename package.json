@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "format": "prettier --write .",
     "build": "tsc -b",
     "start": "nodemon dist/index.js",
     "dev": "npm run build && npm run start"
@@ -13,7 +14,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.11.1",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
@@ -25,7 +26,10 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^7.0.3",
     "nodemon": "^3.1.10",
-    "prisma": "^6.9.0",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "prisma": "^6.11.1"
   }
 }
