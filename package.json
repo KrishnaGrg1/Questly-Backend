@@ -17,7 +17,6 @@
     "@prisma/client": "^6.11.1",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.3",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^6.4.17",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
@@ -29,6 +28,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "prettier": "^3.6.2",
     "prisma": "^6.11.1"
   }

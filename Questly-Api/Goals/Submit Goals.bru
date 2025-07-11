@@ -1,0 +1,15 @@
+meta {
+  name: Submit Goals
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8001/api/v1/goal/submit-goals
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjEsImlhdCI6MTc1MjI1NzgxNywiZXhwIjoxNzUyMjYxNDE3fQ.E5L98xqIqvhLFXG6V3_is61jHjQaY3zQyyk8KcfZfDw
+}

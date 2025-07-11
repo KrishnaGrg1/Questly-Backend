@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,19 +8,45 @@ datasource db {
 }
 
 model User {
-  id               Int               @id @default(autoincrement())
-  UserName         String            @unique
-  email            String            @unique
+  id               Int                     @id @default(autoincrement())
+  UserName         String                  @unique
+  email            String                  @unique
   password         String
-  xp               Int               @default(0)
-  level            Int               @default(1)
-  streak           Int               @default(0)
-  goals            String[]
-  completionQuests CompletionQuest[]
+  xp               Int                     @default(0)
+  level            Int                     @default(1)
+  streak           Int                     @default(0)
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  Community        Community[]
+  communityMembers CommunityMember[]
+  completions      CompletionQuest[]
+  userLeaderboards GlobalUserLeaderboard[]
+  goals            Goal[]
+  otps             Otp[]
   quests           Quest[]
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  Otp              Otp[]
+}
+
+enum GoalCategory {
+  Fitness
+  MentalHealth
+  Education
+  Career
+  Programming
+  Lifestyle
+  Finance
+  Creativity
+  Social
+}
+
+model Goal {
+  id         Int          @id @default(autoincrement())
+  userId     Int          @unique
+  title      String
+  category   GoalCategory
+  selfRating Int          @default(0)
+  createdAt  DateTime     @default(now())
+  user       User         @relation(fields: [userId], references: [id])
+  quests     Quest[]
 }
 
 model Quest {
@@ -37,15 +57,10 @@ model Quest {
   isCompleted Boolean           @default(false)
   date        DateTime
   createdAt   DateTime          @default(now())
-  user        User              @relation(fields: [userId], references: [id])
+  goalId      Int?
   completions CompletionQuest[]
-}
-
-model Otp {
-  id       Int    @id @default(autoincrement())
-  otp_code String
-  userId   Int
-  user     User   @relation(fields: [userId], references: [id])
+  goal        Goal?             @relation(fields: [goalId], references: [id])
+  user        User              @relation(fields: [userId], references: [id])
 }
 
 model CompletionQuest {
@@ -53,7 +68,52 @@ model CompletionQuest {
   questId Int
   userId  Int
   date    DateTime @default(now())
+  quest   Quest    @relation(fields: [questId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+}
 
-  user  User  @relation(fields: [userId], references: [id])
-  quest Quest @relation(fields: [questId], references: [id])
+model Otp {
+  id        Int      @id @default(autoincrement())
+  otp_code  String
+  userId    Int
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Community {
+  id          Int                    @id @default(autoincrement())
+  name        String                 @unique
+  description String?
+  createdAt   DateTime               @default(now())
+  ownerId     Int
+  owner       User                   @relation(fields: [ownerId], references: [id])
+  leaderboard CommunityLeaderboard[]
+  members     CommunityMember[]
+}
+
+model CommunityMember {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  communityId Int
+  joinedAt    DateTime  @default(now())
+  totalXP     Int       @default(0)
+  community   Community @relation(fields: [communityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model CommunityLeaderboard {
+  id          Int       @id @default(autoincrement())
+  communityId Int
+  totalXP     Int
+  rank        Int
+  community   Community @relation(fields: [communityId], references: [id])
+}
+
+model GlobalUserLeaderboard {
+  id      Int  @id @default(autoincrement())
+  userId  Int
+  totalXP Int
+  rank    Int
+  user    User @relation(fields: [userId], references: [id])
 }

@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-const client = new PrismaClient();
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import env from '../helpers/config';
 import { sendRecoveryEmail } from '../helpers/sendRecoveryOtp';
+import IRequest from '../middlewares/authMiddleware';
+import client from '../helpers/prisma';
 
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -81,8 +81,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
-    const JWT_Password = env.JWT_Password as string;
-    const token = jwt.sign({ userID: existingUser.id }, JWT_Password);
+    const JWT_Password = env.JWT_SECRET as string;
+    const token = jwt.sign({ userID: existingUser.id }, JWT_Password, {
+      expiresIn: '1h',
+    });
     res.status(200).json({
       message: 'User login successfully',
       token,
@@ -120,6 +122,7 @@ const forgetPassword = async (req: Request, res: Response): Promise<void> => {
       data: {
         otp_code: hashed_Otp,
         userId: existingUser.id,
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000),
       },
     });
     res.status(200).json({
@@ -196,11 +199,59 @@ const verifyPassword = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const me = async (req: IRequest, res: Response): Promise<void> => {
+  try {
+    const userID = req.userID;
+    if (!userID) {
+      res.status(400).json({
+        message: 'Unauthorized',
+      });
+      return;
+    }
+    const existingUser = await client.user.findUnique({
+      where: {
+        id: Number(userID),
+      },
+      select: {
+        id: true,
+        UserName: true,
+        email: true,
+        xp: true,
+        level: true,
+        streak: true,
+        createdAt: true,
+      },
+    });
+    if (!existingUser) {
+      res.status(400).json({
+        message: 'User not found',
+      });
+      return;
+    }
+    res.status(200).json({
+      existingUser,
+      message: 'Successfully retrieved user data',
+    });
+    return;
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(500).json({
+        message: e.message,
+      });
+    } else {
+      res.status(500).json({
+        message: 'Unexpected error has occurred',
+      });
+    }
+  }
+};
+
 const authController = {
   register,
   login,
   forgetPassword,
   verifyPassword,
+  me,
 };
 
 export default authController;

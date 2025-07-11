@@ -5,7 +5,7 @@ import env from './helpers/config';
 const app = express();
 const port = env.PORT;
 app.use(express.json());
-app.use(mainRoutes);
+app.use('/api/v1/', mainRoutes);
 
 app.listen(port, () => {
   console.log('Server running on port', port);
