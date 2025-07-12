@@ -5,6 +5,12 @@ import env from '../helpers/config';
 import { sendRecoveryEmail } from '../helpers/sendRecoveryOtp';
 import IRequest from '../middlewares/authMiddleware';
 import client from '../helpers/prisma';
+import {
+  makeErrorResponse,
+  makeSuccessResponse,
+} from '../helpers/standartResponse';
+import { TranslationRequest } from '../middlewares/translationMiddleware';
+import { Language } from '../translation/translation';
 
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -57,47 +63,76 @@ const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const login = async (req: Request, res: Response): Promise<void> => {
+const login = async (req: TranslationRequest, res: Response): Promise<void> => {
   try {
+    const lang = req.language as Language;
     const { email, password } = req.body;
+
     const existingUser = await client.user.findFirst({
-      where: {
-        email,
-      },
+      where: { email },
     });
+
     if (!existingUser) {
-      res.status(400).json({
-        message: 'User didnot exist',
-      });
+      res
+        .status(400)
+        .json(
+          makeErrorResponse(
+            new Error('User does not exist'),
+            'error.auth.user_not_found',
+            lang,
+            400
+          )
+        );
       return;
     }
+
     const comparePassword = await bcrypt.compare(
       password,
-      existingUser?.password
+      existingUser.password
     );
     if (!comparePassword) {
-      res.status(400).json({
-        message: 'Incorrect password',
-      });
+      res
+        .status(400)
+        .json(
+          makeErrorResponse(
+            new Error('Incorrect password'),
+            'error.auth.incorrect_password',
+            lang,
+            400
+          )
+        );
       return;
     }
+
     const JWT_Password = env.JWT_SECRET as string;
     const token = jwt.sign({ userID: existingUser.id }, JWT_Password, {
       expiresIn: '1h',
     });
-    res.status(200).json({
-      message: 'User login successfully',
-      token,
-    });
+
+    res
+      .status(200)
+      .json(makeSuccessResponse(token, 'success.auth.login', lang));
+    return;
   } catch (e: unknown) {
+    const lang = (req.language as Language) || 'eng';
+
     if (e instanceof Error) {
-      res.status(500).json({
-        message: e.message,
-      });
+      res
+        .status(500)
+        .json(makeErrorResponse(e, 'error.auth.unexpected', lang, 500));
+      return;
     } else {
-      res.status(500).json({
-        messsage: 'Unexpected Error has occurred',
-      });
+      res
+        .status(500)
+        .json(
+          makeErrorResponse(
+            new Error('Unexpected error'),
+            'error.auth.unexpected',
+            lang,
+            500
+          )
+        );
+      return;
     }
   }
 };

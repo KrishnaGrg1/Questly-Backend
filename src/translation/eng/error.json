@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "username_exists": "Username already exist",
+    "email_exists": "Email already exist",
+    "user_not_found": "User not found",
+    "email_not_found": "Email not found",
+    "invalid_otp": "Invalid OTP",
+    "incorrect_password": "Incorrect password",
+    "unauthorized": "Unauthorized",
+    "unexpected": "Unexpected error has occurred"
+  }
+}

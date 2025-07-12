@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "username_exists": "اسم المستخدم موجود بالفعل",
+    "email_exists": "البريد الإلكتروني موجود بالفعل",
+    "user_not_found": "المستخدم غير موجود",
+    "email_not_found": "البريد الإلكتروني غير موجود",
+    "invalid_otp": "رمز التحقق غير صالح",
+    "incorrect_password": "كلمة المرور غير صحيحة",
+    "unauthorized": "غير مصرح",
+    "unexpected": "حدث خطأ غير متوقع"
+  }
+}

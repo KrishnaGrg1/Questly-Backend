@@ -1,0 +1,6 @@
+{
+  "auth": {
+    "register": "User registered successfully",
+    "login": "User login successfully"
+  }
+}

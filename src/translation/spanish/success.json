@@ -1,0 +1,6 @@
+{
+  "auth": {
+    "register": "Usuario registrado con éxito",
+    "login": "Inicio de sesión exitoso"
+  }
+}

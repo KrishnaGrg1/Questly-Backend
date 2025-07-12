@@ -24,6 +24,7 @@ model User {
   goals            Goal[]
   otps             Otp[]
   quests           Quest[]
+  UserBadge        UserBadge[]
 }
 
 enum GoalCategory {
@@ -49,6 +50,13 @@ model Goal {
   quests     Quest[]
 }
 
+enum QuestType {
+  Daily
+  Weekly
+  Monthly
+  OneTime
+}
+
 model Quest {
   id          Int               @id @default(autoincrement())
   userId      Int
@@ -59,6 +67,8 @@ model Quest {
   createdAt   DateTime          @default(now())
   goalId      Int?
   completions CompletionQuest[]
+  type        QuestType         @default(Daily)
+  recurrence  String?
   goal        Goal?             @relation(fields: [goalId], references: [id])
   user        User              @relation(fields: [userId], references: [id])
 }
@@ -103,11 +113,13 @@ model CommunityMember {
 }
 
 model CommunityLeaderboard {
-  id          Int       @id @default(autoincrement())
-  communityId Int
-  totalXP     Int
-  rank        Int
-  community   Community @relation(fields: [communityId], references: [id])
+  id           Int       @id @default(autoincrement())
+  communityId  Int
+  totalXP      Int
+  rank         Int
+  period       String
+  calculatedAt DateTime
+  community    Community @relation(fields: [communityId], references: [id])
 }
 
 model GlobalUserLeaderboard {
@@ -116,4 +128,31 @@ model GlobalUserLeaderboard {
   totalXP Int
   rank    Int
   user    User @relation(fields: [userId], references: [id])
+}
+
+model Badge {
+  id        Int         @id @default(autoincrement())
+  name      String
+  iconUrl   String?
+  criteria  String // text-based or code-based logic
+  createdAt DateTime    @default(now())
+  users     UserBadge[]
+}
+
+model UserBadge {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  badgeId   Int
+  awardedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+}
+
+model QuestTemplate {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  category    GoalCategory
+  xpValue     Int
+  createdAt   DateTime     @default(now())
 }
