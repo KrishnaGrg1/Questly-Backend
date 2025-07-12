@@ -3,8 +3,9 @@ import chin from './chin/index';
 import eng from './eng/index';
 import nep from './nep/index';
 import span from './spanish/index';
+import jap from './jap/index';
 
-export type Language = 'eng' | 'arab' | 'chin' | 'nep' | 'span';
+export type Language = 'eng' | 'arab' | 'chin' | 'nep' | 'span' | 'jap';
 export type MessageType = 'error' | 'success';
 
 const messages: Record<Language, any> = {
@@ -13,6 +14,7 @@ const messages: Record<Language, any> = {
   eng: eng,
   nep: nep,
   span: span,
+  jap: jap,
 };
 
 function getNestedValue(obj: any, keyPath: string): any {
