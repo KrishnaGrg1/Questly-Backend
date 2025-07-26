@@ -27,16 +27,16 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 10.12.1
-          run_install: false # we'll run pnpm install manually
+          run_install: false
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install && pnpm install @prisma/client
 
       - name: Generate Prisma Client
         run: npx prisma generate
 
       - name: Lint
-        run: pnpm run format # or pnpm lint if you have that
+        run: pnpm run format # Or pnpm lint if you have a lint script
 
       - name: Build project
         run: pnpm run build
