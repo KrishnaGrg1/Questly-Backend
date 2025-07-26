@@ -15,30 +15,41 @@ const submitGoal = async (req: IRequest, res: Response): Promise<void> => {
       });
       return;
     }
-    const exisitngGoal = await client.goal.findUnique({
+    const existingGoal = await client.goal.findFirst({
       where: {
         userId: userID,
       },
+      select: {
+        id: true,
+      },
     });
-    if (exisitngGoal) {
+
+    console.log('existingGoal:', existingGoal);
+    if (existingGoal) {
       res.status(400).json({
         message: 'User has already goal',
       });
       return;
     }
     const { title, category, selfRating } = req.body;
+    console.log('category type:', typeof category);
+    console.log('category value:', category);
+
+    // Check that category matches the enum exactly
     if (!Object.values(GoalCategory).includes(category)) {
       res.status(400).json({ message: 'Invalid category value' });
       return;
     }
+
     const newGoal = await client.goal.create({
       data: {
         userId: userID,
         title,
-        category: category as GoalCategory,
+        category: category as GoalCategory, // now valid
         selfRating,
       },
     });
+
     res.status(200).json({
       newGoal,
       message: 'created goal',
