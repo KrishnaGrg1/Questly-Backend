@@ -62,7 +62,12 @@ npx prisma generate
 5. **Run Backend:**
 
 ```bash
-npm start
+<!--Using npm -->
+npm run start
+```
+```bash
+<!--Using pnpm  -->
+pnpm dev
 ```
 
 ---
