@@ -13,7 +13,8 @@ Welcome to the **Questly Backend** repository! This project powers the backend o
 - 🧠 XP, levels, and streak calculation logic
 - 📊 Goal setting and personal progression
 - 🔒 JWT-based session handling
-- 💾 PostgreSQL with Prisma O
+- 💾 PostgreSQL with Prisma ORM
+- 📧 Email notifications via SMTP
 
 ---
 
@@ -37,33 +38,70 @@ git clone https://github.com/KrishnaGrg1/Questly-Backend.git
 cd Questly-Backend
 ```
 
-2. **Setup Backend:**
+2. **Install dependencies:**
 
 ```bash
-cd Questly-Backend
+# Using npm
 npm install
+
+# Using pnpm
+pnpm install
 ```
 
-3. **Create your `.env` file inside `backend/`:**
+3. **Setup environment variables:**
+
+Copy the `.env.example` file to `.env` and fill in your actual values:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file with your configuration:
 
 ```env
-DATABASE_URL=your_postgresql_url
-JWT_SECRET=your_secret_key
-PORT=port_number
+# Database connection string
+DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
+
+# JWT secret password
+JWT_Password="your_jwt_secret_password"
+
+# Port for the application
+PORT=8080
+
+# SMTP configuration for email notifications
+SMTP_HOST="smtp.example.com"
+SMTP_PORT=587
+SMTP_USER="example_user"
+SMTP_PASS="example_password"
 ```
 
-4. **Initialize Prisma and migrate DB**
+4. **Initialize Prisma and migrate database:**
 
 ```bash
 npx prisma migrate dev
 npx prisma generate
 ```
 
-5. **Run Backend:**
+5. **Run the application:**
 
 ```bash
-npm start
+# Using npm
+npm run start
+
+# Using pnpm
+pnpm dev
 ```
+
+---
+
+## 🚀 Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run start` / `pnpm dev` | Start the development server |
+| `npx prisma migrate dev` | Run database migrations |
+| `npx prisma generate` | Generate Prisma client |
+| `npx prisma studio` | Open Prisma Studio (database GUI) |
 
 ---
 
