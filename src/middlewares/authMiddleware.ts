@@ -19,7 +19,7 @@ export const authMiddleware = async (
   }
   const token = authHeader.replace('Bearer ', '');
   try {
-    const decode = jwt.verify(token, env.JWT_SECRET as string) as {
+    const decode = jwt.verify(token, env.JWT_Password as string) as {
       userID: number;
     };
     if (typeof decode === 'string') {

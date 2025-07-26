@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import IRequest from './authMiddleware';
-import { Language } from '../translation/translation';
+import { Language, isValidLanguage } from '../translation/translation';
+
 export interface TranslationRequest extends IRequest {
   language?: string;
 }
@@ -11,21 +12,23 @@ const translationMiddeware = async (
   next: NextFunction
 ) => {
   try {
-    const middleawarelanguageHeader = req.headers['x-language'];
-
+    const languageHeader = req.headers['x-language'];
     if (
-      !middleawarelanguageHeader ||
-      typeof middleawarelanguageHeader !== 'string'
+      !languageHeader ||
+      typeof languageHeader !== 'string' ||
+      !isValidLanguage(languageHeader)
     ) {
-      req.language = 'eng';
+      req.language = 'eng'; // Default to English
     } else {
-      req.language = middleawarelanguageHeader as Language;
+      req.language = languageHeader;
     }
 
-    next(); // only call once
+    next();
   } catch (error) {
     console.error('Translation middleware error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    // Always default to English on error
+    req.language = 'eng';
+    next(); // Continue processing instead of stopping
   }
 };
 

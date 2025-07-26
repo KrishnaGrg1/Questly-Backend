@@ -94,7 +94,6 @@ const login = async (req: TranslationRequest, res: Response): Promise<void> => {
   try {
     const lang = req.language as Language;
     const { email, password } = req.body;
-
     const existingUser = await client.user.findFirst({
       where: { email },
     });
@@ -131,7 +130,8 @@ const login = async (req: TranslationRequest, res: Response): Promise<void> => {
       return;
     }
 
-    const JWT_Password = env.JWT_SECRET as string;
+    const JWT_Password = env.JWT_Password as string;
+
     const token = jwt.sign({ userID: existingUser.id }, JWT_Password, {
       expiresIn: '1h',
     });

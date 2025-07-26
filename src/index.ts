@@ -1,7 +1,8 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import mainRoutes from './routes/mainRoutes';
 import env from './helpers/config';
 import translationMiddeware from './middlewares/translationMiddleware';
+
 
 const app = express();
 const port = env.PORT;
@@ -18,16 +19,29 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-language');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-language, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
   if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
+    res.status(200).end();
     return;
   }
   next();
 });
 
-app.use(express.json({ limit: '10mb' }));
+// Parse JSON bodies
+app.use(express.json({ 
+  limit: '10mb'
+}));
+
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ 
+  extended: true,
+  limit: '10mb'
+}));
+
 app.use('/api/v1/', translationMiddeware, mainRoutes);
+
 
 app.listen(port, () => {
   console.log('Server running on port', port);
