@@ -1,8 +1,8 @@
-# Questly Backend
+# LevelUp Backend
 
-Welcome to the **Questly Backend** repository! This project powers the backend of **Questly**, a gamified educational platform designed to motivate and track learners' progress through quests, streaks, and experience points.
+Welcome to the **LevelUp Backend** repository! This project powers the backend of **LevelUp**, a gamified educational platform designed to motivate and track learners' progress through quests, streaks, and experience points.
 
-> 🚀 Repository: [https://github.com/KrishnaGrg1/Questly-Backend.git](https://github.com/KrishnaGrg1/Questly-Backend)
+> 🚀 Repository: [https://github.com/KrishnaGrg1/LevelUp-Backend.git](https://github.com/KrishnaGrg1/LevelUp-Backend)
 
 ---
 
@@ -34,8 +34,8 @@ Welcome to the **Questly Backend** repository! This project powers the backend o
 1. **Clone the repo:**
 
 ```bash
-git clone https://github.com/KrishnaGrg1/Questly-Backend.git
-cd Questly-Backend
+git clone https://github.com/KrishnaGrg1/LevelUp-Backend.git
+cd LevelUp-Backend
 ```
 
 2. **Install dependencies:**
