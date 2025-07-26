@@ -229,7 +229,7 @@ const forgetPassword = async (req: TranslationRequest, res: Response): Promise<v
 const verifyPassword = async (req: TranslationRequest, res: Response): Promise<void> => {
   const { otp, userId, newPassword } = req.body;
   try {
-    await client.$transaction(async (tx) => {
+    await client.$transaction(async (tx: any) => {
       // Find user
       const existingUser = await tx.user.findUnique({
         where: { id: userId },
